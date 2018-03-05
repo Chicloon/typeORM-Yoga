@@ -2,8 +2,9 @@ import "reflect-metadata";
 import { GraphQLServer } from "graphql-yoga";
 import { createConnection, getConnection } from "typeorm";
 import resolvers from "./resolvers";
-
 import { User } from "./entity/User";
+import constants from "./constants";
+import * as jwt from "jsonwebtoken";
 
 // const typeDefs = `
 //   type Query {
@@ -13,16 +14,35 @@ import { User } from "./entity/User";
 
 // const resolvers = {};
 
+export function decodeToken(token: String) {
+  const arr = token.split(" ");
+  let user;
+  if (arr[0] === "Bearer") {
+    try {
+      user = jwt.verify(arr[1], constants.JWT_SECRET);
+      // return user;
+    } catch (error) {
+      throw new Error("Token not valid!");
+    }
+    // return jwt.verify(arr[1], constants.JWT_SECRET);
+  }
+  return user;
+}
+
 async function getUser(req: any) {
   // try {
   // console.log(req);
   // console.log("==========headers", req.headers);
-  const token = (await req.headers.auth) ? req.headers.auth : null;
+  const token = (await req.headers.auth) ? req.headers.auth : undefined;
+  if (token) {
+    const decoded = await decodeToken(token);
+    console.log(decoded);
+  }
   // console.log(req.headers);
-  console.log(token);
+  // console.log(token);
   const user = await getConnection()
     .getRepository(User)
-    .findOneById(token);
+    .findOneById(1);
   console.log(user);
   // if (token != null) {
   //   user = await decodeToken(token);
