@@ -18,6 +18,7 @@
     "typescript": "2.5.2"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "graphql-yoga": "^1.4.3",
     "pg": "^7.4.1",
     "reflect-metadata": "^0.1.10",
