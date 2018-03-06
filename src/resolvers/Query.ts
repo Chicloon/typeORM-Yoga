@@ -1,13 +1,15 @@
-import { getConnection } from "typeorm";
+// import { getConnection } from "typeorm";
 import { User } from "../entity/User";
+import { ResolverMap } from "../types/ResolverType";
 
-export const Query = {
-  hello: (_: any, { name }: any) => `hhello ${name || "World"}`,
-  users: (_: any, args: any, context: any) => {
+export const Query: ResolverMap = {
+  hello: (_, { name }) => `hhello ${name || "World"}`,
+  users: (_, args, context) => {
     console.log("context====", context);
     console.log("====args", args);
-    return getConnection()
-      .getRepository(User)
-      .find();
+    return User.find();
+    // return getConnection()
+    //   .getRepository(User)
+    //   .find();
   }
 };

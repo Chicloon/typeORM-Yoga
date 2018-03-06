@@ -5,6 +5,19 @@ type User {
   password: String!
 }
 
+type Channel {
+  id: ID!
+  name: String!
+  members: [ChannelMember!]!
+}
+
+type ChannelMember {
+  id: ID!
+  member: User!
+  channel: Channel!
+  role: String!
+}
+
 type Query {
   users: [User]
   user(id: ID!): User
