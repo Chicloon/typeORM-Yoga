@@ -26,4 +26,8 @@ type Query {
 
 type Mutation {
   createUser(email: String!, password: String!, name: String!): User!
+  createChannel(name: String!, member: Int): Channel!
+  createChannelMember(channelId: Int, userId: Int): Boolean!
+  # login(email: String!, password: String!)
+  test: Boolean
 }

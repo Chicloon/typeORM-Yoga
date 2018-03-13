@@ -14,7 +14,7 @@ import * as jwt from "jsonwebtoken";
 
 // const resolvers = {};
 
-export function decodeToken(token: String) {
+export function decodeToken(token: string) {
   const arr = token.split(" ");
   let user;
   if (arr[0] === "Bearer") {
@@ -36,14 +36,14 @@ async function getUser(req: any) {
   const token = (await req.headers.auth) ? req.headers.auth : undefined;
   if (token) {
     const decoded = await decodeToken(token);
-    console.log(decoded);
+    console.log("decoded token", decoded);
   }
   // console.log(req.headers);
   // console.log(token);
   const user = await getConnection()
     .getRepository(User)
     .findOneById(1);
-  console.log(user);
+  console.log("=== user from getUser", user);
   // if (token != null) {
   //   user = await decodeToken(token);
   //   req.user = user;
