@@ -33,29 +33,40 @@ export const channelResolvers: ResolverMap = {
 
     // console.log("found channel", channel);
 
-    const user = await User.findOneById(13);
+    const user = await User.findOneById(1);
 
     console.log("found user", user);
 
     // const channel = await getConnection()
     //   .createQueryBuilder()
     //   .relation(Channel, "users")
-    //   .of(7)
-    //   .add(12);
+    //   .of(1)
+    //   .add(3);
 
-    const member = await ChannelMember.findOne({
-      where: { channelId: 7, userId: 12 }
-    });
-    console.log("found member", member);
+    // console.log("found channel", channel);
 
-    member.role = "admin";
-    member.save();
+    const channelMembers = await getRepository(ChannelMember)
+      .createQueryBuilder("channelMember")
+      .where("channelMember.role = :role", { role: "admin" })
+      .innerJoinAndSelect("channelMember.user", "user")
+      .leftJoinAndSelect("channelMember.channel", "channel")
+      // .where("user.id = :id", { id: user.id })
+      .getMany();
 
-    const channelMembers = await ChannelMember.find({
-      where: { channelId: 7 }
-    });
+    // const member = await ChannelMember.findOne({
+    //   where: { userId: 3 }
+    // });
+    // console.log("found member", member);
 
-    console.log(channelMembers);
+    // member.role = "admin";
+    // member.save();
+
+    console.log(await ChannelMember.find());
+    // const channelMembers = await ChannelMember.find({
+    //   where: { channelId: 1, role: "admin" }
+    // });
+
+    console.log("channel members", channelMembers);
 
     return true;
   }
