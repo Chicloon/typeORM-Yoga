@@ -24,7 +24,7 @@ export class User extends BaseEntity {
   @Column({ type: "varchar", length: "230" })
   password: string;
 
-  @ManyToMany(() => Channel, channel => channel.users)
+  @ManyToMany(() => Channel)
   @JoinTable({ name: "channel_member" })
   channels: Channel[];
 }

@@ -15,7 +15,21 @@ export class Channel extends BaseEntity {
   @Column({ type: "text" })
   name: string;
 
-  @ManyToMany(() => User, user => user.channels)
-  @JoinTable({name: "channel_member"})
+  @ManyToMany(() => User, {})
+  @JoinTable({ name: "channel_member" })
   users: User[];
+
+  // @ManyToMany(() => User)
+  // @JoinTable({
+  //   name: "channel_member",
+  //   joinColumn: {
+  //     name: "channel",
+  //     referencedColumnName: "id"
+  //   },
+  //   inverseJoinColumn: {
+  //     name: "user",
+  //     referencedColumnName: "id"
+  //   }
+  // })
+  // users: User[];
 }

@@ -17,6 +17,6 @@ export class Question extends BaseEntity {
   @Column() text: string;
 
   @ManyToMany(() => Category)
-  @JoinTable()
+  @JoinTable({ name: "category_question" })
   categories: Category[];
 }

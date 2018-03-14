@@ -11,7 +11,7 @@ import { Channel } from "./Channel";
 
 @Entity()
 export class ChannelMember extends BaseEntity {
-  @Column({ type: "text" })
+  @Column({ type: "text", default: "user" })
   role: string;
 
   @PrimaryColumn({ type: "int" })

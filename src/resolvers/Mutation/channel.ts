@@ -5,6 +5,7 @@ import { getConnection, getRepository, getManager } from "typeorm";
 
 import { Category } from "../../entity/Category";
 import { Question } from "../../entity/Question";
+import { ChannelMember } from "../../entity/ChannelMember";
 // import { Question } from "../../entity/Question";
 
 // const connection = getConnection();
@@ -12,7 +13,7 @@ import { Question } from "../../entity/Question";
 
 // const manager = getConnection().manager;
 
-export const channel: ResolverMap = {
+export const channelResolvers: ResolverMap = {
   async createChannel(_, args) {
     const user = await User.findOneById(1);
     console.log(user);
@@ -23,59 +24,38 @@ export const channel: ResolverMap = {
     return newChannel.save();
   },
   async test() {
-    // const category1 = new Category();
-    // category1.name = "books";
-    // await getConnection().manager.save(category1);
-    // const result = await getConnection().manager.save(category1);
-    // console.log(result);
+    // const channel = await getRepository(Channel)
+    //   .createQueryBuilder("channel")
+    //   .leftJoinAndSelect("channel.users", "user")
+    //   .where("user.id = :cid", { cid: 13 })
+    //   .andWhere("channel.id = :id", { id: 7 })
+    //   .getOne();
 
-    // const category2 = new Category();
-    // category2.name = "zoo";
-    // await connection.manager.save(category2);
+    // console.log("found channel", channel);
 
-    // const question = getConnection().manager.create(Question, {
-    //   title: "title",
-    //   text: "text"
-    // });
-    // question.categories = [category1];
-    // await getConnection().manager.save(question);
+    const user = await User.findOneById(13);
 
-    const category = await Category.findOneById(9);
-    const category2 = category.name;
+    console.log("found user", user);
 
-    console.log("found category", category);
+    // const channel = await getConnection()
+    //   .createQueryBuilder()
+    //   .relation(Channel, "users")
+    //   .of(7)
+    //   .add(12);
 
-    // const question = await Question.findOneById(3);
+    const member = await ChannelMember.findOne({
+      where: { channelId: 7, userId: 12 }
+    });
+    console.log("found member", member);
 
-    // const question = await getRepository(Question)
-    //   .createQueryBuilder("question")
-    //   .leftJoinAndSelect("question.categories", "category")
-    //   .where("question.id = :id", { id: 3 })
-    //   .delete();
-    // .execute();
+    member.role = "admin";
+    member.save();
 
-    await getConnection()
-      .createQueryBuilder()
-      .delete()
-      .from(Question)
-      .where("id = :id", { id: 4 })
-      .execute();
+    const channelMembers = await ChannelMember.find({
+      where: { channelId: 7 }
+    });
 
-    console.log("found question", question);
-
-    // question.title = "The new Title!!!";
-
-    // question.categories.push(category);
-    // console.log("question before save", question);
-    // question.save();
-
-    const allQuestions = await getConnection()
-      .getRepository(Question)
-      .createQueryBuilder("question")
-      .leftJoinAndSelect("question.categories", "category")
-      .getMany();
-
-    console.log("allQuestions", allQuestions[allQuestions.length - 1]);
+    console.log(channelMembers);
 
     return true;
   }
