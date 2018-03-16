@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { GraphQLServer } from "graphql-yoga";
-import { createConnection, getConnection } from "typeorm";
+import { createConnection, getConnection, getRepository } from "typeorm";
 import resolvers from "./resolvers";
 import { User } from "./entity/User";
 import constants from "./constants";
@@ -40,17 +40,25 @@ async function getUser(req: any) {
   }
   // console.log(req.headers);
   // console.log(token);
-  const user = await getConnection()
-    .getRepository(User)
-    .findOneById(1);
+  // const user = await getRepository(User)
+  //   .createQueryBuilder("user")
+  //   .where({ id: 1 })
+  //   .getRawOne();
+
+  const user = await User.findOne({
+    where: { id: 1 },
+    relations: ["channels"]
+  });
   console.log("=== user from getUser", user);
+  console.log({ ...user });
   // if (token != null) {
   //   user = await decodeToken(token);
   //   req.user = user;
   // } else {
   //   req.user = null;
   // }
-  return user;
+
+  return { ...user };
   // } catch (error) {
   //   throw error;
   // }

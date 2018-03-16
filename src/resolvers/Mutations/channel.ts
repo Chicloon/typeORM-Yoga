@@ -14,14 +14,22 @@ import { ChannelMember } from "../../entity/ChannelMember";
 // const manager = getConnection().manager;
 
 export const channelResolvers: ResolverMap = {
-  async createChannel(_, args) {
+  createChannel: async (_, args) => {
     const user = await User.findOneById(1);
-    console.log(user);
     const newChannel = await Channel.create({ name: args.name });
-
-    console.log(newChannel.users);
-    console.log(newChannel);
     return newChannel.save();
+  },
+  addChannelMember: async (_, { channelId, userId }) => {
+    try {
+      await getConnection()
+        .createQueryBuilder()
+        .relation(Channel, "users")
+        .of(channelId)
+        .add(userId);
+      return true;
+    } catch (error) {
+      return error;
+    }
   },
   async test() {
     // const channel = await getRepository(Channel)
