@@ -3,7 +3,7 @@ import { Channel } from "../../entity/Channel";
 import { getConnection } from "typeorm";
 import { User } from "../../entity/User";
 
-export const userFiels: ResolverMap = {
+export const userType: ResolverMap = {
   channels: (_, args, ctx) => {
     return getConnection()
       .createQueryBuilder()
