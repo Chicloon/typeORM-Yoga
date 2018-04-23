@@ -19,12 +19,17 @@
   },
   "dependencies": {
     "@types/jsonwebtoken": "^7.2.5",
+    "@types/lodash": "^4.14.105",
+    "@types/underscore": "^1.8.8",
     "body-parser": "^1.18.2",
+    "class-validator": "^0.8.1",
     "graphql-yoga": "^1.4.3",
     "jsonwebtoken": "^8.2.0",
+    "lodash": "^4.17.5",
     "pg": "^7.4.1",
     "reflect-metadata": "^0.1.10",
-    "typeorm": "0.1.13"
+    "typeorm": "0.1.13",
+    "underscore": "^1.8.3"
   },
   "directories": {
     "test": "test"

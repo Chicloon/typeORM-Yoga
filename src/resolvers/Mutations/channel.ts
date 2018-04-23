@@ -2,10 +2,13 @@ import { ResolverMap } from "../../types/ResolverType";
 import { Channel } from "../../entity/Channel";
 import { User } from "../../entity/User";
 import { getConnection, getRepository, getManager } from "typeorm";
+import { validate } from "class-validator";
 
+import * as _ from "lodash";
 import { Category } from "../../entity/Category";
 import { Question } from "../../entity/Question";
 import { ChannelMember } from "../../entity/ChannelMember";
+
 // import { Question } from "../../entity/Question";
 
 // const connection = getConnection();
@@ -14,10 +17,21 @@ import { ChannelMember } from "../../entity/ChannelMember";
 // const manager = getConnection().manager;
 
 export const channelResolvers: ResolverMap = {
-  createChannel: async (_, args) => {
+  createChannel: async (parentValues, args) => {
     const user = await User.findOneById(1);
     const newChannel = await Channel.create({ name: args.name });
-    return newChannel.save();
+
+    const errors = await validate(newChannel);
+    console.log(errors);
+    if (errors.length > 0) {
+      const constraints = errors[0].constraints;
+      const errorMsg = constraints[Object.keys(constraints)[0]];
+
+      throw new Error(errorMsg);
+    } else {
+      await newChannel.save();
+    }
+    return newChannel;
   },
   addChannelMember: async (_, { channelId, userId }) => {
     try {
@@ -28,7 +42,7 @@ export const channelResolvers: ResolverMap = {
         .add(userId);
       return true;
     } catch (error) {
-      return error;
+      throw new Error(`User already channel's member`);
     }
   },
   async test() {
