@@ -4,10 +4,12 @@ import {
   Column,
   BaseEntity,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  OneToMany
 } from "typeorm";
 import { Length } from "class-validator";
 import { User } from "./User";
+import { Message } from "./Message";
 
 @Entity()
 export class Channel extends BaseEntity {
@@ -21,17 +23,6 @@ export class Channel extends BaseEntity {
   @JoinTable({ name: "channel_member" })
   users: User[];
 
-  // @ManyToMany(() => User)
-  // @JoinTable({
-  //   name: "channel_member",
-  //   joinColumn: {
-  //     name: "channel",
-  //     referencedColumnName: "id"
-  //   },
-  //   inverseJoinColumn: {
-  //     name: "user",
-  //     referencedColumnName: "id"
-  //   }
-  // })
-  // users: User[];
+  @OneToMany(() => Message, message => message.channel)
+  messages: Message[];
 }

@@ -1,3 +1,5 @@
+scalar Date
+
 type User {
   id: ID!
   email: String!
@@ -19,14 +21,24 @@ type ChannelMember {
   role: String!
 }
 
+type Message {
+  id: ID!
+  text: String
+  user: User!
+  channel: Channel
+  createdAt: Date!
+}
+
 type Query {
   me: User!
   users: [User]
   user(id: ID!): User
   channels: [Channel!]!
+  messages: [Message!]!
 }
 
 type Mutation {
+  createMessage(channelId: Int!, userId: Int!, text: String!): Message
   createUser(email: String!, password: String!, name: String!): User!
   createChannel(name: String!, member: Int): Channel!
   addChannelMember(channelId: Int, userId: Int): Boolean!

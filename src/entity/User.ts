@@ -4,9 +4,11 @@ import {
   Column,
   BaseEntity,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  OneToMany
 } from "typeorm";
 import { Channel } from "./Channel";
+import { Message } from "./Message";
 
 @Entity()
 export class User extends BaseEntity {
@@ -27,4 +29,7 @@ export class User extends BaseEntity {
   @ManyToMany(() => Channel)
   @JoinTable({ name: "channel_member" })
   channels: Channel[];
+
+  @OneToMany(() => Message, message => message.user)
+  messages: Message[];
 }
