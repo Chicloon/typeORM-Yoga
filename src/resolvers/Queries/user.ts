@@ -5,6 +5,7 @@ export const userQueries: ResolverMap = {
   users: (_, args, context) => {
     // console.log("context====", context);
     // console.log("====args", args);
+    console.log("context is =====", context);
     return User.find();
     // return getConnection()
     //   .getRepository(User)
